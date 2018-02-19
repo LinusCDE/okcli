@@ -174,3 +174,6 @@ Common topics include:
 - [Configuring mycli](http://mycli.net/config)
 - [Using/Disabling the pager](http://mycli.net/pager)
 - [Syntax colors](http://mycli.net/syntax)
+
+
+test

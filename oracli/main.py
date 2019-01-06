@@ -205,10 +205,12 @@ class OraCli(object):
             yield (None, None, None,
                    'Specify the schema to switch to.')
         else:
-            self.sqlexecute.conn.current_schema=str(arg)
-            self.sqlexecute.dbname=arg
+            schema_name = str(arg).upper()
+            self.sqlexecute.conn.current_schema=schema_name
+            self.sqlexecute.dbname=schema_name
 
-            yield (None, None, None, 'Schema updated to {}'.format(arg))
+            yield (None, None, None, 'Schema updated to {}'.format(schema_name))
+
     def execute_from_file(self, arg, **_):
         if not arg:
             message = 'Missing required argument, filename.'

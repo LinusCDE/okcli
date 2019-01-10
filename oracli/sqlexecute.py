@@ -153,7 +153,7 @@ class SQLExecute(object):
         try:
 
             databases = [x[0] for x in cur.execute(DATABASES_QUERY).fetchall()]
-            print('Databases Query. {} got {} '.format(DATABASES_QUERY, databases))
+            _logger.debug('Databases Query. {} got {} '.format(DATABASES_QUERY, databases))
             return databases
         finally:
             cur.close()

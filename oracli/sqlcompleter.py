@@ -141,7 +141,7 @@ class SQLCompleter(Completer):
 
     def _extend_schemata(self, schema):
         # dbmetadata.values() are the 'tables' and 'functions' dicts
-        print('Extending schema  with {}'.format(schema))
+        _logger.debug('extending schema  with {}'.format(schema))
         for metadata in self.dbmetadata.values():
             metadata[schema] = {}
         self.all_completions.update(schema)

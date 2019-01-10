@@ -118,28 +118,30 @@ class SQLExecute(object):
                              '' if cursor.rowcount == 1 else 's')
 
 
-    def tables(self):
+    def tables(self, schema=None):
         """Yields table names"""
 
         cur = self.conn.cursor()
+        schema = schema if schema else self.dbname 
         try:
             _logger.debug('Tables Query. sql: %r', TABLES_QUERY)
             # return [x[0] for x in
             #         cur.execute(self.tables_query).fetchall()]
-            return [row for row in cur.execute(TABLES_QUERY  % self.dbname)]
+            return [row for row in cur.execute(TABLES_QUERY  % schema)]
 
         finally:
             cur.close()
 
-    def table_columns(self):
+    def table_columns(self, schema=None):
         """Yields column names"""
         cur = self.conn.cursor()
+        schema = schema if schema else self.dbname 
 
         try:
             _logger.debug('Columns Query. sql: %r', ALL_TABLE_COLUMNS_QUERY)
             # return [x[0] for x in
             #         cur.execute(self.table_columns_query % self.dbname).fetchall()]
-            return [row for row in cur.execute(ALL_TABLE_COLUMNS_QUERY % self.dbname)]
+            return [row for row in cur.execute(ALL_TABLE_COLUMNS_QUERY % schema)]
         finally:
             cur.close()
 
@@ -151,7 +153,7 @@ class SQLExecute(object):
         try:
 
             databases = [x[0] for x in cur.execute(DATABASES_QUERY).fetchall()]
-            _logger.debug('Databases Query. {} got {} '.format(DATABASES_QUERY, databases))
+            print('Databases Query. {} got {} '.format(DATABASES_QUERY, databases))
             return databases
         finally:
             cur.close()

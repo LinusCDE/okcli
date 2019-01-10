@@ -151,6 +151,7 @@ def extract_tables(sql):
     # we'll identify abc, col1 and col2 as table names.
     insert_stmt = parsed[0].token_first().value.lower() == 'insert'
     stream = extract_from_part(parsed[0], stop_at_punctuation=insert_stmt)
+    # TODO drink me
     return list(extract_table_identifiers(stream))
 
 def find_prev_keyword(sql):

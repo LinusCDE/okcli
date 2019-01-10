@@ -134,19 +134,19 @@ class SQLCompleter(Completer):
             self.users.extend(user)
             self.all_completions.update(user)
 
-    def extend_schemata(self, schema):
-        _logger.debug('extending schema {}'.format(schema))
-        if schema is None:
-            return
-        metadata = self.dbmetadata['tables']
-        metadata[schema] = {}
+    def extend_schemata(self, schemas):
+        _logger.debug('extending schema {}'.format(schemas))
+        for schema in schemas:
+            self._extend_schemata(schema)
 
+    def _extend_schemata(self, schema):
         # dbmetadata.values() are the 'tables' and 'functions' dicts
+        print('Extending schema  with {}'.format(schema))
         for metadata in self.dbmetadata.values():
             metadata[schema] = {}
         self.all_completions.update(schema)
 
-    def extend_relations(self, data, kind):
+    def extend_relations(self, data, kind, schema):
         """Extend metadata for tables or views
 
         :param data: list of (rel_name, ) tuples
@@ -158,7 +158,8 @@ class SQLCompleter(Completer):
         # specifying a database name. This exception must be handled to prevent
         # crashing.
         _logger.info('extending {} with {}'.format(kind, data))
-
+        
+        
         try:
             data = [self.escaped_names(d) for d in data]
         except Exception:
@@ -167,17 +168,21 @@ class SQLCompleter(Completer):
 
         # dbmetadata['tables'][$schema_name][$table_name] should be a list of
         # column names. Default to an asterisk
+
+        # TODO
+        # add schema to data instead of self.dbname
+        #
         metadata = self.dbmetadata[kind]
         for relname in data:
             name = relname[0]
             try:
-                metadata[self.dbname][name] = ['*']
+                metadata[schema][name] = ['*']
             except KeyError:
                 _logger.error('%r %r listed in unrecognized schema %r',
-                              kind, name, self.dbname)
+                              kind, name, schema)
             self.all_completions.add(name)
 
-    def extend_columns(self, column_data, kind):
+    def extend_columns(self, column_data, kind, schema):
         """Extend column metadata
 
         :param column_data: list of (rel_name, column_name) tuples
@@ -196,7 +201,7 @@ class SQLCompleter(Completer):
         metadata = self.dbmetadata[kind]
 
         for relname, column in column_data:
-            metadata[self.dbname][relname].append(column)
+            metadata[schema][relname].append(column)
             self.all_completions.add(column)
 
     def extend_functions(self, func_data):
@@ -332,7 +337,7 @@ class SQLCompleter(Completer):
                 aliases = self.find_matches(word_before_cursor, aliases)
                 completions.extend(aliases)
 
-            elif suggestion['type'] == 'database':
+            elif suggestion['type'] in ('database', 'schema'):
                 dbs = self.find_matches(word_before_cursor, self.databases)
                 completions.extend(dbs)
 

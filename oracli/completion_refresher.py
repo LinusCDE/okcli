@@ -85,16 +85,18 @@ def refresh_databases(completer, executor):
 
 @refresher('schemata')
 def refresh_schemata(completer, executor):
-    completer.extend_schemata(executor.dbname)
+    #completer.extend_schemata(executor.dbname)
     completer.set_dbname(executor.dbname)
+    completer.extend_schemata(executor.databases())
 
 @refresher('tables')
 def refresh_tables(completer, executor):
-
-    tables = executor.tables()
-    columns = executor.table_columns()
-    completer.extend_relations(tables, kind='tables')
-    completer.extend_columns(columns, kind='tables')
+    # loop over schemas
+    for schema in executor.databases(): 
+        tables = executor.tables(schema)
+        columns = executor.table_columns(schema)
+        completer.extend_relations(tables, kind='tables', schema=schema)
+        completer.extend_columns(columns, kind='tables', schema=schema)
 
 @refresher('users')
 def refresh_users(completer, executor):

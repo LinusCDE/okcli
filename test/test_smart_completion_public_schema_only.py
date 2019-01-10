@@ -25,9 +25,9 @@ def completer():
         columns.extend([(table, col) for col in cols])
 
     comp.set_dbname('test')
-    comp.extend_schemata('test')
-    comp.extend_relations(tables, kind='tables')
-    comp.extend_columns(columns, kind='tables')
+    comp.extend_schemata(['test'])
+    comp.extend_relations(tables, kind='tables', schema='test')
+    comp.extend_columns(columns, kind='tables', schema='test')
 
     return comp
 

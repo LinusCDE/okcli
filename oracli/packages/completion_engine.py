@@ -237,11 +237,10 @@ def suggest_based_on_last_token(token, text_before_cursor, full_text, identifier
 
         # Suggest tables from either the currently-selected schema or the
         # public schema if no schema has been specified
-        if schema:
-            suggest = [{'type': 'table', 'schema': schema}]
-        else:
+        suggest = [{'type': 'table', 'schema': schema}]
+        if not schema:
             # Suggest schemas
-            suggest = [{'type': 'schema'}]
+            suggest.insert(0, {'type': 'schema'})
 
         # Only tables can be TRUNCATED, otherwise suggest views
         if token_v != 'truncate':

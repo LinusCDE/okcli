@@ -158,14 +158,14 @@ class SQLExecute(object):
         finally:
             cur.close()
 
-    def functions(self):
+    def functions(self, schema=None):
         """Yields tuples of (schema_name, function_name)"""
-
+        schema = schema if schema else self.dbname 
         cur = self.conn.cursor()
         try:
             _logger.debug('Functions Query. sql: %r', FUNCTIONS_QUERY)
             return [x[0] for x in
-                    cur.execute(FUNCTIONS_QUERY % self.dbname).fetchall()]
+                    cur.execute(FUNCTIONS_QUERY % schema).fetchall()]
             # for row in cur:
             #     yield row
         finally:

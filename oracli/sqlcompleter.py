@@ -142,7 +142,7 @@ class SQLCompleter(Completer):
     def _extend_schemata(self, schema):
         # dbmetadata.values() are the 'tables' and 'functions' dicts
         _logger.debug('extending schema  with {}'.format(schema))
-        schema = schema.lower()
+        schema = schema.upper()
         for metadata in self.dbmetadata.values():
             metadata[schema] = {}
         self.all_completions.update(schema)
@@ -159,7 +159,7 @@ class SQLCompleter(Completer):
         # specifying a database name. This exception must be handled to prevent
         # crashing.
         _logger.info('extending {} with {}'.format(kind, data))
-        schema = schema.lower()
+        schema = schema.upper()
         
         
         try:
@@ -191,7 +191,7 @@ class SQLCompleter(Completer):
         :param kind: either 'tables' or 'views'
         :return:
         """
-        schema = schema.lower()
+        schema = schema.upper()
         # 'column_data' is a generator object. It can throw an exception while
         # being consumed. This could happen if the user has launched the app
         # without specifying a database name. This exception must be handled to
@@ -206,7 +206,7 @@ class SQLCompleter(Completer):
             metadata[schema][relname].append(column)
             self.all_completions.add(column)
 
-    def extend_functions(self, func_data):
+    def extend_functions(self, func_data, schema):
         # 'func_data' is a generator object. It can throw an exception while
         # being consumed. This could happen if the user has launched the app
         # without specifying a database name. This exception must be handled to
@@ -221,11 +221,11 @@ class SQLCompleter(Completer):
         metadata = self.dbmetadata['functions']
 
         for func in func_data:
-            metadata[self.dbname][func[0]] = None
+            metadata[schema][func[0]] = None
             self.all_completions.add(func[0])
 
     def set_dbname(self, dbname):
-        self.dbname = dbname
+        self.dbname = dbname.upper()
 
     def reset_completions(self):
         self.databases = []
@@ -399,7 +399,7 @@ class SQLCompleter(Completer):
             # A fully qualified schema.relname reference or default_schema
             # DO NOT escape schema names.
             schema = tbl[0] or self.dbname
-            schema = schema.lower()
+            schema = schema.upper()
             relname = tbl[1]
             escaped_relname = self.escape_name(tbl[1])
 
@@ -430,7 +430,7 @@ class SQLCompleter(Completer):
         """Returns list of tables or functions for a (optional) schema"""
         metadata = self.dbmetadata[obj_type]
         schema = schema or self.dbname
-        schema = schema.lower()
+        schema = schema.upper()
         try:
             objects = metadata[schema].keys()
         except KeyError:

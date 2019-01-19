@@ -212,7 +212,6 @@ def suggest_based_on_last_token(token, text_before_cursor, full_text, identifier
         return [{'type': 'user'}]
     elif token_v in ('select', 'where', 'having'):
         # Check for a table alias or schema qualification
-        
         parent = (identifier and identifier.get_parent_name()) or []
 
         if parent:
@@ -229,10 +228,6 @@ def suggest_based_on_last_token(token, text_before_cursor, full_text, identifier
     elif (token_v.endswith('join') and token.is_keyword) or (token_v in
             ('copy', 'from', 'update', 'into', 'describe', 'truncate',
                 'desc', 'explain')):
-        #
-        # this is what to change
-        #
-
         schema = (identifier and identifier.get_parent_name()) or []
 
         # Suggest tables from either the currently-selected schema or the

@@ -1,6 +1,6 @@
 # oracli
 
-An Oracle-DB command line client with auto-completion and syntax highlighting that emulates the functionality of [sqlplus](http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html), based on [mycli](https://github.com/dbcli/mycli)
+An Oracle-DB command line client with auto-completion and syntax highlighting that emulates the functionality of [sqlplus](http://www.oracle.com/technetwork/developer-tools/sql-developer/overview/index.html), based on [mycli](https://github.com/dbcli/mycli).
 
 ### Usage
 ```
@@ -39,7 +39,7 @@ Options:
 ### help
 
 ```
-Oracle-11g user@host:schema> help
+Oracle-12c user@host:schema> help
 +----------+-----------------------+------------------------------------------------------------+
 | Command  | Shortcut              | Description                                                |
 +----------+-----------------------+------------------------------------------------------------+
@@ -65,12 +65,10 @@ Oracle-11g user@host:schema> help
 +----------+-----------------------+------------------------------------------------------------+
 ```
 
-### Installing locally
+### Installing
 
 ```
-mkvirtualenv oracli # optional
-pyinstall cx_Oracle # get AHL package
-withproxy pip install -r requirements.txt # get external packages
+pip install -r requirements.txt
 python setup.py [install|develop]
 ```
 

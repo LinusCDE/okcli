@@ -125,8 +125,6 @@ class SQLExecute(object):
         schema = schema if schema else self.dbname 
         try:
             _logger.debug('Tables Query. sql: %r', TABLES_QUERY)
-            # return [x[0] for x in
-            #         cur.execute(self.tables_query).fetchall()]
             return [row for row in cur.execute(TABLES_QUERY  % schema)]
 
         finally:
@@ -139,14 +137,9 @@ class SQLExecute(object):
 
         try:
             _logger.debug('Columns Query. sql: %r', ALL_TABLE_COLUMNS_QUERY)
-            # return [x[0] for x in
-            #         cur.execute(self.table_columns_query % self.dbname).fetchall()]
             return [row for row in cur.execute(ALL_TABLE_COLUMNS_QUERY % schema)]
         finally:
             cur.close()
-
-            # for row in cur:
-            #     yield row
 
     def databases(self):
         cur = self.conn.cursor()

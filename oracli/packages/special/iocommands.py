@@ -210,7 +210,7 @@ def delete_favorite_query(arg, **_):
     return [(None, None, None, status)]
 
 
-@special_command('!', 'system [command]',
+@special_command('!', '! [command]',
                  'Execute a system shell commmand.', aliases=['system'],
                  case_sensitive=False)
 def execute_system_command(arg, **_):

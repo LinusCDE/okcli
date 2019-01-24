@@ -1,15 +1,18 @@
 import pytest
-from utils import (HOST, USER, PASSWORD, PORT,
-                   CHARSET, create_db, db_connection)
-import mycli.sqlexecute
+from utils import (
+    HOST,
+    USER,
+    PASSWORD,
+    SCHEMA,
+    CHARSET,
+    db_connection)
+import oracli.sqlexecute
 
 
 @pytest.yield_fixture(scope="function")
 def connection():
-    create_db('_test_db')
-    connection = db_connection('_test_db')
+    connection = db_connection()
     yield connection
-
     connection.close()
 
 
@@ -21,7 +24,6 @@ def cursor(connection):
 
 @pytest.fixture
 def executor(connection):
-    return mycli.sqlexecute.SQLExecute(
-        database='_test_db', user=USER,
-        host=HOST, password=PASSWORD, port=PORT, socket=None, charset=CHARSET,
-        local_infile=False)
+    return oracli.sqlexecute.SQLExecute(
+        database=SCHEMA, user=USER,
+        host=HOST, password=PASSWORD, port=666, charset=CHARSET)

@@ -1,6 +1,6 @@
 import pytest
 
-from oracli.packages.completion_engine import suggest_type
+from ocli.packages.completion_engine import suggest_type
 
 
 def sorted_dicts(dicts):

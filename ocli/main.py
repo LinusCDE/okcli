@@ -15,7 +15,7 @@ from time import time
 import click
 from pygments.token import Token
 
-import oracli.packages.special as special
+import ocli.packages.special as special
 import sqlparse
 from cli_helpers.tabular_output import TabularOutputFormatter
 from prompt_toolkit import AbortAction, Application, CommandLineInterface
@@ -36,7 +36,7 @@ from .completion_refresher import CompletionRefresher
 from .config import (read_config_files, str_to_bool,
                      write_default_config)
 from .encodingutils import utf8tounicode
-from .key_bindings import oracli_bindings
+from .key_bindings import ocli_bindings
 from .lexer import OracleLexer
 from .packages.special.main import NO_QUERY
 from .sqlcompleter import SQLCompleter
@@ -63,7 +63,7 @@ class NullHandler(logging.Handler):
         pass
 
 
-class OraCli(object):
+class OCli(object):
 
     default_prompt = '\\t \\u@\\h:\\d> '
     max_len_prompt = 45
@@ -77,12 +77,12 @@ class OraCli(object):
     system_config_files = [
     ]
 
-    default_config_file = os.path.join(PACKAGE_ROOT, 'oraclirc')
+    default_config_file = os.path.join(PACKAGE_ROOT, 'oclirc')
 
     def __init__(self, sqlexecute=None, prompt=None,
                  logfile=None, defaults_suffix=None, defaults_file=None,
                  login_path=None, auto_vertical_output=False, warn=None,
-                 oraclirc="~/.oraclirc"):
+                 oclirc="~/.oclirc"):
         self.sqlexecute = sqlexecute
         self.logfile = logfile
         self.defaults_suffix = defaults_suffix
@@ -97,7 +97,7 @@ class OraCli(object):
 
         # Load config.
         config_files = ([self.default_config_file] + self.system_config_files +
-                        [oraclirc])
+                        [oclirc])
         c = self.config = read_config_files(config_files)
         self.multi_line = c['main'].as_bool('multi_line')
         self.key_bindings = c['main']['key_bindings']
@@ -117,7 +117,7 @@ class OraCli(object):
 
         # Write user config if system config wasn't the last config loaded.
         if c.filename not in self.system_config_files:
-            write_default_config(self.default_config_file, oraclirc)
+            write_default_config(self.default_config_file, oclirc)
 
         # audit log
         if self.logfile is None and 'audit_log' in c['main']:
@@ -252,13 +252,13 @@ class OraCli(object):
 
         handler.setFormatter(formatter)
 
-        root_logger = logging.getLogger('oracli')
+        root_logger = logging.getLogger('ocli')
         root_logger.addHandler(handler)
         root_logger.setLevel(level_map[log_level.upper()])
 
         logging.captureWarnings(True)
 
-        root_logger.debug('Initializing oracli logging.')
+        root_logger.debug('Initializing ocli logging.')
         root_logger.debug('Log file %r.', log_file)
 
     def read_my_cnf_files(self, files, keys):
@@ -368,7 +368,7 @@ class OraCli(object):
         if self.smart_completion:
             self.refresh_completions()
 
-        key_binding_manager = oracli_bindings()
+        key_binding_manager = ocli_bindings()
 
         def prompt_tokens(cli):
             prompt = self.get_prompt(self.prompt_format)
@@ -539,7 +539,7 @@ class OraCli(object):
         )
         with self._completer_lock:
             buf = CLIBuffer(always_multiline=self.multi_line, completer=self.completer,
-                            history=FileHistory(os.path.expanduser(os.environ.get('oracli_HISTFILE', '~/.oracli-history'))),
+                            history=FileHistory(os.path.expanduser(os.environ.get('ocli_HISTFILE', '~/.ocli-history'))),
                             complete_while_typing=Always(), accept_action=AcceptAction.RETURN_DOCUMENT)
 
             if self.key_bindings == 'vi':
@@ -661,7 +661,7 @@ class OraCli(object):
         """
         with self._completer_lock:
             self.completer = new_completer
-            # When oracli is first launched we call refresh_completions before
+            # When ocli is first launched we call refresh_completions before
             # instantiating the cli object. So it is necessary to check if cli
             # exists before trying the replace the completer object in cli.
             if self.cli:
@@ -679,7 +679,7 @@ class OraCli(object):
         string = string.replace('\\u', sqlexecute.user or '(none)')
         string = string.replace('\\h', host or '(none)')
         string = string.replace('\\d', sqlexecute.dbname or '(none)')
-        string = string.replace('\\t', sqlexecute.server_type()[0] or 'oracli')
+        string = string.replace('\\t', sqlexecute.server_type()[0] or 'ocli')
         string = string.replace('\\n', "\n")
         string = string.replace('\\D', now.strftime('%a %b %d %H:%M:%S %Y'))
         string = string.replace('\\m', now.strftime('%M'))
@@ -736,15 +736,15 @@ class OraCli(object):
 @click.option('-h', '--host', help='Host address of the database.')
 @click.option('-u', '--user', help='User name to connect to the database.')
 @click.option('-p', '--password', help='Password to connect to the database.')
-@click.option('-v', '--version', is_flag=True, help='Output oracli\'s version.')
+@click.option('-v', '--version', is_flag=True, help='Output ocli\'s version.')
 @click.option('-D', '--database', 'database', help='Database to use.')
 @click.option('-R', '--prompt', 'prompt',
               help='Prompt format (Default: "{0}").'.format(
-                  OraCli.default_prompt))
+                  OCli.default_prompt))
 @click.option('-l', '--logfile', type=click.File(mode='a', encoding='utf-8'),
               help='Log every query and its results to a file.')
-@click.option('--oraclirc', type=click.Path(), default="~/.oraclirc",
-              help='Location of oraclirc file.')
+@click.option('--oclirc', type=click.Path(), default="~/.oclirc",
+              help='Location of oclirc file.')
 @click.option('--auto-vertical-output', is_flag=True,
               help='Automatically switch to vertical output mode if the result is wider than the terminal width.')
 @click.option('-t', '--table', is_flag=True,
@@ -763,16 +763,16 @@ class OraCli(object):
 def cli(sqlplus, user, host, password, database,
         version, prompt, logfile, login_path,
         auto_vertical_output, table, csv,
-        warn, execute, filename, oraclirc):
+        warn, execute, filename, oclirc):
     """An Oracle-DB terminal client with auto-completion and syntax highlighting.
 
     \b
     Examples:
-      - oracli -u my_user -h my_host.com -D schema
-      - oracli user/password@tns_name
-      - oracli user/password@tns_name -D schema
-      - oracli user/password@tns_name -e "query"
-      - oracli user@tns_name -@ query_file.sql
+      - ocli -u my_user -h my_host.com -D schema
+      - ocli user/password@tns_name
+      - ocli user/password@tns_name -D schema
+      - ocli user/password@tns_name -e "query"
+      - ocli user@tns_name -@ query_file.sql
     """
 
     if version:
@@ -782,27 +782,27 @@ def cli(sqlplus, user, host, password, database,
     if sqlplus:
         user, password, host = parse_sqlplus_arg(sqlplus)
 
-    oracli = OraCli(prompt=prompt, logfile=logfile,
+    ocli = OCli(prompt=prompt, logfile=logfile,
                     login_path=login_path,
                     auto_vertical_output=auto_vertical_output, warn=warn,
-                    oraclirc=oraclirc)
+                    oclirc=oclirc)
 
-    oracli.connect(database, user, password, host)
+    ocli.connect(database, user, password, host)
 
-    oracli.logger.debug('Launch Params: \n'
+    ocli.logger.debug('Launch Params: \n'
                         '\tdatabase: %r'
                         '\tuser: %r'
                         '\thost: %r', database, user, host)
 
     if execute or filename:
         if csv:
-            oracli.formatter.format_name = 'csv'
+            ocli.formatter.format_name = 'csv'
         elif not table:
-            oracli.formatter.format_name = 'tsv'
+            ocli.formatter.format_name = 'tsv'
     # --execute argument
     if execute:
         try:
-            oracli.run_query(execute)
+            ocli.run_query(execute)
             exit(0)
         except Exception as e:
             click.secho(str(e), err=True, fg='red')
@@ -813,12 +813,12 @@ def cli(sqlplus, user, host, password, database,
         try:
             with open(os.path.expanduser(filename), encoding='utf-8') as f:
                 query = f.read()
-            oracli.run_query(query)
+            ocli.run_query(query)
         except IOError as e:
             click.secho(str(e), err=True, fg='red')
 
     if sys.stdin.isatty():
-        oracli.run_cli()
+        ocli.run_cli()
     else:
         stdin = click.get_text_stream('stdin')
         stdin_text = stdin.read()
@@ -826,21 +826,21 @@ def cli(sqlplus, user, host, password, database,
         try:
             sys.stdin = open('/dev/tty')
         except FileNotFoundError:
-            oracli.logger.warning('Unable to open TTY as stdin.')
+            ocli.logger.warning('Unable to open TTY as stdin.')
 
-        if (oracli.ddl_warning and
+        if (ocli.ddl_warning and
                 confirm_ddl_query(stdin_text) is False):
             exit(0)
         try:
             new_line = True
 
             if csv:
-                oracli.formatter.format_name = 'csv'
+                ocli.formatter.format_name = 'csv'
                 new_line = False
             elif not table:
-                oracli.formatter.format_name = 'tsv'
+                ocli.formatter.format_name = 'tsv'
 
-            oracli.run_query(stdin_text, new_line=new_line)
+            ocli.run_query(stdin_text, new_line=new_line)
             exit(0)
         except Exception as e:
             click.secho(str(e), err=True, fg='red')

@@ -10,9 +10,9 @@ from .filters import HasSelectedCompletion
 _logger = logging.getLogger(__name__)
 
 
-def oracli_bindings():
+def ocli_bindings():
     """
-    Custom key bindings for oracli.
+    Custom key bindings for ocli.
     """
     key_binding_manager = KeyBindingManager(
         enable_open_in_editor=True,

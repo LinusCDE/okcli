@@ -7,7 +7,7 @@ from mock import Mock, patch
 
 @pytest.fixture
 def refresher():
-    from oracli.completion_refresher import CompletionRefresher
+    from ocli.completion_refresher import CompletionRefresher
     return CompletionRefresher()
 
 
@@ -82,7 +82,7 @@ def test_refresh_with_callbacks(refresher):
     sqlexecute_class = Mock()
     sqlexecute = Mock()
 
-    with patch('oracli.completion_refresher.SQLExecute', sqlexecute_class):
+    with patch('ocli.completion_refresher.SQLExecute', sqlexecute_class):
         # Set refreshers to 0: we're not testing refresh logic here
         refresher.refreshers = {}
         refresher.refresh(sqlexecute, callbacks)

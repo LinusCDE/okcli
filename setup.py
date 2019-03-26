@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
-with open('oracli/__init__.py', 'rb') as f:
+with open('ocli/__init__.py', 'rb') as f:
     version = str(ast.literal_eval(_version_re.search(
         f.read().decode('utf-8')).group(1)))
 
@@ -21,18 +21,18 @@ def get_requirements():
 
 
 setup(
-    name='oracli',
+    name='ocli',
     version=version,
     author='Man AHL Technology',
     author_email='ManAHLTech@ahl.com',
-    url='https://github.com/manahl/oracli',
+    url='https://github.com/manahl/ocli',
     packages=find_packages(),
     description=description,
     long_description=description,
     install_requires=get_requirements(),
     include_package_data=True,
     entry_points={
-        'console_scripts': ['oracli = oracli.main:cli'],
+        'console_scripts': ['ocli = ocli.main:cli'],
     },
     classifiers=[
         'Intended Audience :: Developers',

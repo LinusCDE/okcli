@@ -16,7 +16,7 @@ multi_line = False
 ddl_warning = True
 
 # log_file location.
-log_file = ~/.oracli.log
+log_file = ~/.ocli.log
 
 # Default log level. Possible values: "CRITICAL", "ERROR", "WARNING", "INFO"
 # and "DEBUG". "NONE" disables logging.

@@ -2,9 +2,9 @@ import logging
 import os
 import platform
 
-from oracli import __version__
-from oracli.packages.special import iocommands
-from oracli.packages.special.utils import format_uptime
+from ocli import __version__
+from ocli.packages.special import iocommands
+from ocli.packages.special.utils import format_uptime
 
 from .main import PARSED_QUERY, RAW_QUERY, special_command
 
@@ -152,11 +152,11 @@ def status(cur, **_):
 
     title.append('--------------')
 
-    # Output the oracli client information.
+    # Output the ocli client information.
     implementation = platform.python_implementation()
     version = platform.python_version()
     client_info = []
-    client_info.append('oracli {0},'.format(__version__))
+    client_info.append('ocli {0},'.format(__version__))
     client_info.append('running on {0} {1}'.format(implementation, version))
     title.append(' '.join(client_info) + '\n')
 

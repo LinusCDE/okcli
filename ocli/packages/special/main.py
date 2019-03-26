@@ -64,7 +64,7 @@ def execute(cur, sql):
         if special_cmd.case_sensitive:
             raise CommandNotFound('Command not found: %s' % command)
     # "help <SQL KEYWORD> is a special case. We want built-in help, not
-    # oracli help here.
+    # ocli help here.
     if command == 'help' and arg:
         return show_keyword_help(cur=cur, arg=arg)
     if special_cmd.arg_type == STORED_PROC_STMT:

@@ -17,7 +17,7 @@ metadata = {
 @pytest.fixture
 def completer():
 
-    import oracli.sqlcompleter as sqlcompleter
+    import ocli.sqlcompleter as sqlcompleter
     comp = sqlcompleter.SQLCompleter(smart_completion=True)
 
     tables, columns = [], []

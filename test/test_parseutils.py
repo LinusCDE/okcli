@@ -1,6 +1,6 @@
 import pytest
 
-from oracli.packages.parseutils import extract_tables
+from ocli.packages.parseutils import extract_tables
 
 
 def test_empty_string():

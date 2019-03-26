@@ -61,5 +61,5 @@ Examples:
         return '%s: Deleted' % name
 
 
-favoritequeries = FavoriteQueries(read_config_file('~/.oraclirc'))
+favoritequeries = FavoriteQueries(read_config_file('~/.oclirc'))
 

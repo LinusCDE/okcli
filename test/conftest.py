@@ -1,6 +1,6 @@
 import pytest
 
-import oracli.sqlexecute
+import ocli.sqlexecute
 from utils import HOST, PASSWORD, SCHEMA, USER, db_connection
 
 
@@ -19,6 +19,6 @@ def cursor(connection):
 
 @pytest.fixture
 def executor(connection):
-    return oracli.sqlexecute.SQLExecute(database=SCHEMA, user=USER,
+    return ocli.sqlexecute.SQLExecute(database=SCHEMA, user=USER,
                                         host=HOST, password=PASSWORD)
 

@@ -2,7 +2,7 @@ from os import getenv
 
 import pytest
 
-from oracli.main import special
+from ocli.main import special
 
 PASSWORD = getenv('PYTEST_PASSWORD')
 USER = getenv('PYTEST_USER')

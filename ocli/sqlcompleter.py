@@ -4,7 +4,7 @@ import logging
 from collections import Counter
 from re import compile, escape
 
-from oracli.lexer import ORACLE_KEYWORDS
+from ocli.lexer import ORACLE_KEYWORDS
 from prompt_toolkit.completion import Completer, Completion
 
 from .packages.completion_engine import suggest_type

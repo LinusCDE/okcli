@@ -1,7 +1,7 @@
 import logging
 
 import sqlparse
-from oracli.packages.special.dbcommands import (ALL_TABLE_COLUMNS_QUERY,
+from ocli.packages.special.dbcommands import (ALL_TABLE_COLUMNS_QUERY,
                                                 CONNECTION_ID_QUERY,
                                                 DATABASES_QUERY,
                                                 FUNCTIONS_QUERY, TABLES_QUERY,

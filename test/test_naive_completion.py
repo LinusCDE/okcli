@@ -8,7 +8,7 @@ from prompt_toolkit.document import Document
 
 @pytest.fixture
 def completer():
-    import oracli.sqlcompleter as sqlcompleter
+    import ocli.sqlcompleter as sqlcompleter
     return sqlcompleter.SQLCompleter(smart_completion=False)
 
 

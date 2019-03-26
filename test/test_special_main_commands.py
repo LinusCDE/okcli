@@ -1,4 +1,4 @@
-import oracli.packages.special.main  as mod
+import ocli.packages.special.main  as mod
 import pytest
 
 @pytest.mark.parametrize('sql', [
